@@ -1,0 +1,879 @@
+%------- Document format ----------
+
+
+
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{setspace}
+\usepackage{combelow}
+\usepackage{titlesec} 
+
+\newcommand{\sectionbreak}{\clearpage}
+
+%------- Math related ----------
+\usepackage{calrsfs}
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+\newcommand{\ji}{$\pazocal{L}$}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+%------- Misc related ----------
+
+\usepackage{wasysym}
+
+%-------- Theorem setup --------
+
+\numberwithin{equation}{section}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{quest}[thm]{Questions}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{exmp}[thm]{Example}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{addm}[thm]{Addendum}
+\newtheorem{exer}[thm]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+
+
+%-------- Metadata --------------
+
+\title{Epistemic Logic}
+
+\author {Biro-Balan Antonia \\ Gr. 132}
+
+\date{\small \today}
+
+%-------- Document begin --------------
+
+\begin{document}
+\nocite{*}
+\onehalfspacing
+
+%------- Cover and Title plage -----------------
+
+\maketitle
+\vspace{3cm}
+
+%------- Abstract -----------
+
+\begin{abstract}
+
+This paper introduces the basic concepts about the formalized view of knowledge, the basic formal language, semantics, and proof systems. All these are studied by epistemic logic.
+
+We prove the Soundness and Completeness of the logical system as well as other notable results.
+
+
+
+\end{abstract}
+
+\newpage
+
+%------- Table of contents -----------
+
+\tableofcontents
+
+%------- Sections -----------
+
+\section{Introduction}
+
+In this paper we will be presenting the language, the semantics and the axiomatisation used in epistemic logic. After which we will be proving some important concepts and theorems for this logic system, such as the Soundness theorem, the Truth Lemma, the Completeness theorem.
+%for the basic system of axioms $S5$ for .
+
+\subsection{Modal logic}
+
+Modal logic is a formal logic that extends classical propositional and first-order logic.
+
+There are many types of modal logic for example temporal logic (the logic of time), doxastic logic (the logic of belief), deontic logic, epistemic logic (the logic of knowledge).
+
+These types of logic systems include operators that express modality. A \textbf{ modal} qualifies a statement. For example, in epistemic logic we will include the knowledge modal $K$ used in expressions like this:
+$$
+\ K_a\phi\implies K_a K_a\phi
+$$
+where \textit{a} is an agent, and this translates to: \textbf{agent \textit{a} knows that $\phi$ is true} implies that \textbf{$a$ knows that $a$ knows that $\phi$ is true}.
+
+Another example of a modal is $B$: \textbf{$B_a\phi$ - agent \textit{a} believes that $\phi$} (this is in doxastic logic, the logic of belief).
+
+Epistemic logic started as a contribution to epistemology with the book Knowledge and Belief \cite{hintikka}. Formulas like
+$$
+K_i\psi \text{ for } \text{ ``the agent i knows that } \psi ''
+$$
+$$
+B_i\psi \text{ for } \text{``the agent i believes that }\psi ''
+$$
+provided logical forms for stating and analyzing philosophical propositions and arguments. And more than that, their model-theoretic semantics provided an appealing extensional way of thinking about what agents know or believe in a given situation.
+ 
+This is the book on which the modern epistemic logic was build: Hintikka's book Knowledge and Belief: Introduction to the Logic of the Two Notions \cite{hintikka}.
+The '60s was the moment when modal logic was developed the most and used in all fields of knowledge \cite{carte}.
+
+The formal definition of knowledge formalized by Hintikka is: an agent knows that \textbf{something is the case} if and only if \textbf{it is the case in all worlds that are epistemically accessible} to that agent. 
+
+A world $j$ is \textbf{epistemically  accessible} to an agent if and only if the set of all propositions $p$ that the agent knows in $i$ are \textbf{compatible} with all true propositions in world $j$ \cite{hintikka}.
+
+The semantics provides a concise way to represent the information of an agent. Also it easily allows to add more agents and the information that the agents have about each other. This is called higher-order information.
+
+\newpage
+
+
+\section{Preliminaries}
+
+%The logical system $S5$ is the most popular and accepted in epistemic logic. It is the basic system of axioms for knowledge for a group of agents.
+The next few subsections will cover the language, semantics and axiomatisation (proof system), presenting some definitions, propositions and theorems.
+
+
+
+\subsection{Language}
+
+The language of knowledge consists of a countable set of atomic propositions (written formally with $p, q$,\dots) that describe some state of affairs, facts in a certain world and a finite set of agents (written formally with $a, b, c$,\dots). An agent may be a human being, a player, a process, a robot, etc.
+
+\begin{defn}
+\textbf{(Basic Epistemic language)} Let $P$ be a set of atomic propositions, and $A$ a set of agent-symbols.
+
+With this we will define through induction what is a formula:
+\begin{enumerate}
+    \item Any atomic proposition is a formula. 
+    \item If $\varphi$ is a formula then $\neg\varphi$ is a formula.
+    \item If $\varphi$ and $\psi$ are formulas then $\varphi \land \psi$ is a formula.
+    \item If $\varphi$ is a formula then $K_a \varphi$ is a formula.
+\end{enumerate}
+
+All other formulas are a combination of the three.
+
+\end{defn}
+ 
+Epistemic logic uses a number of other standard conventions like: 
+\begin{itemize}
+\item $(\varphi \lor \psi) \coloneqq \neg(\neg \varphi \land \neg \psi)$
+\item $(\varphi \rightarrow \psi) \coloneqq (\neg\varphi \lor \psi)$
+\item $(\varphi \leftrightarrow \psi) \coloneqq (\varphi \rightarrow \psi) \land (\psi \rightarrow \varphi)$
+
+\item $ \top$ as an abbreviation for $p\lor\neg p$ (for an arbitrary p $\in$ P)
+\item $ \bot $ for $ \neg\top$
+\end{itemize}
+We have defined a modal as a word that expresses modality. It qualifies a statement. The modal operator for epistemic logic is '$K_a\varphi$' and it is interpreted as ``a knows that $ \varphi$''. 
+
+Some epistemic definitions:
+\begin{itemize}
+  \item The fact that $a$ does not know that $\neg\varphi$ (written formally $\neg K_a \neg\varphi$) is sometimes pronounced as
+\textit{the agent considers possible that $\varphi$} and we write it as $\hat{K}_a\varphi \coloneqq \neg K_a \neg\varphi$
+  \item For any subgroup of agents B from A we define $E_B\varphi$ as the conjunction of all individuals in B knowing $\varphi$ and we write it as \textit{Everybody in B knows $\varphi$},
+  where B $\subseteq$ A.
+  
+  $$
+  E_B\varphi \coloneqq \bigwedge_{\substack{
+   b\in B
+  }} 
+  K_b\varphi
+  $$
+ 
+ \item We define $\hat{E}_B\varphi$ as $\neg E_B \neg \varphi$. This is read as \textit{at least one individual in the group B considers it possible that $\varphi$} and written as:  
+ $$
+  \hat E_B \varphi \coloneqq \bigvee_{b \in B} \hat{K}_b\varphi
+ $$
+\end{itemize}
+
+
+\subsection{Semantics}
+
+The semantics of epistemic logic use a special case of \textbf{Kripke models}. In such a model, two notions are of main importance: that of \textit{state} and that of \textit{indistinguishability}.
+
+A \textit{state} is a possible condition of the world and the \textit{indistinguishability} term refers to the agents inability to distinguish between two states. 
+
+\begin{defn}
+
+Given a countable set of atomic propositions $P$ and a finite
+set of agents $A$, a \textbf{Kripke model} is a structure $M = \langle S,R^A, V^P \rangle$, where:
+\begin{itemize}
+
+\item $S$ is a set of states. The set $S$ is also called the domain D(M) of M.
+\item $R^A$ is a function, yielding for every $a \in A$ an accessibility relation $R^A(a)\subseteq S \times S$. We will often write $R_a$ rather than $R^A(a)$ and freely mix a prefix notation $(R_a st)$ with an infix notation $(sR_a t)$.
+\item $V^P : P \rightarrow 2^S$ is a valuation function that for every $p \in P$ yields the set
+$V^P (p) \subseteq S$ of states in which $p$ is true.
+\end{itemize}
+
+If we know that all the relations $R_a$ in $M$ are equivalence relations, we call $M$ an \textit{epistemic model}. In that case, we write $\sim _a$ rather than $R_a$, and we represent the model as $M = \langle S, \sim, V \rangle$.
+
+\end{defn}
+
+
+The Kripke models present the larger picture of a given scenario, but we will interpret formulas in given states and determine their values of truth. This will become clear with the following definition.
+
+\begin{defn}
+
+Epistemic formulas are interpreted on pairs $(M, s)$ consisting of a Kripke model $M = \langle S, R, V\rangle$ and a state $s \in S$. Whenever we write $(M, s)$, we assume that $s \in D(M)$. We will sometimes refer to $(M, s)$ as a state. If $M$ is an epistemic model, $(M, s)$ is also called an \textbf{epistemic state}, but it will be referred to as a \textbf{pointed model} also.
+Now, given a model $M = \langle S, R, V\rangle$ we define that formula $\varphi$ is true in $(M, s)$, also written as $M,s \models \varphi$, as follows:
+\begin{itemize}
+   \item $M,s \models p$ iff $s \in V (p)$
+\item $M ,s \models (\varphi \land \psi)$ iff $M, s \models \varphi$  and $M, s\models \psi$ 
+\item $M, s \models \neg\varphi$ iff not $M, s \models \varphi$ (more formally written M, s $\not\models\varphi$)
+\item $M, s \models K_a\varphi$ iff \textbf{ for all} $t$ such that $sR_a t$ , $M, t \models \varphi$
+\item $M, s \models \hat{K}_a\varphi$ iff \textbf{there exists} a $t$ such that $R_a st$ and $M, s\models\varphi.$
+\end{itemize}
+When a formula $\varphi$ is true for all states in a given model we write $M\models\varphi$. If that formula is also true for all models M in a certain class, say $X$ (for example all epistemic models) then we say that $\varphi$ is valid in $X$ and write $X\models\varphi$.
+If $M\models\varphi$ for all Kripke models the we say that $\varphi$ is valid and write it $K\models\varphi$.
+
+An agent is said to know $\psi$ in a certain pointed model $(M, s)$ if and only if that formula is true in all states he considers possible.
+
+The Kripke semantics gives us a natural way to interpret arbitrary knowledge formulas. For example, if an agent a knows $\varphi$ ($K_a\varphi$) then he also knows that he knows $\varphi$ ($K_aK_a\varphi$).
+
+%Also, the Kripke semantics makes us give up the property of extensionality (the property which dictates that in any formula, one can substitute subformulas whith different, equivalent ones).
+
+\end{defn}
+
+There are some classes of models that are of crucial importance for epistemic logic:
+\begin{defn}
+$R$ stands for a family of \textbf{accessibility relations}, one $R_a$ for each $a\in A$.
+
+\begin{itemize}
+\item The class of all Kripke models is sometimes denoted $K$, hence, $K\models\varphi$ coincides with $\models\varphi$.
+\item $R_a$ is said to be \textbf{serial} if for all $s$ there is a $t$ such that $sR_a t$.
+
+The class of serial Kripke models $\{M = \langle S, R, V \rangle |$ every $ R_a$ is serial$\}$ is
+denoted by $K D$.
+
+\item $R_a$ is said to be \textbf{reflexive} if for all $s$, $sR_a s$.
+
+The class of reflexive Kripke models is denoted by $T$.
+
+\item $R_a$ is \textbf{symmetric} iff for all $s, t$, if $sR_a t$ then $tR_a s$.
+
+\item  $R_a$ is \textbf{transitive} if for all s, t, u, if $sR_a t$ and $tR_a u$ then $sR_a u$.
+
+The class of transitive Kripke models is denoted by $K4$.
+The class of reflexive transitive models is denoted by $S4$.
+\item $R_a$ is \textbf{Euclidean} if for all $s, t$, and $u$, if $sR_a t$ and $sR_a u$ then $tR_a u$.
+
+The class of transitive Euclidean models is denoted by $K45$.
+The class of serial transitive Euclidean models is denoted by $KD45$.
+\item $R_a$ is an \textbf{equivalence} relation if $R_a$ is reflexive, transitive, and symmetric. Equivalently, $R_a$ is an equivalence relation if $R_a$ is reflexive, transitive and Euclidean.
+
+The class of Kripke models with equivalence relations is denoted by $S5$.
+\end{itemize}
+
+\begin{prop}
+
+Let $\varphi , \psi$ be formulas in $L_K$, and let $K_a$ be an epistemic operator for $a \in A$. Let $K$ be the set of all Kripke models, and $S5$ the set
+of Kripke models in which the accessibility relation is an equivalence. Then the following hold:
+
+
+
+\begin{enumerate}
+
+\item $K\models K_a \varphi\land K_a(\varphi \rightarrow \psi) \rightarrow K_a\psi$
+\item $K\models \varphi \implies \models K_a\varphi$
+\item $K\models \varphi \rightarrow \psi \implies\models K_a\varphi \rightarrow K_a\psi$
+\item $K\models \varphi \leftrightarrow \psi \implies \models K_a\psi \leftrightarrow K_a\psi$
+\item $K\models (K_a\varphi\land K_a\psi) \rightarrow K_a(\varphi\land\psi)$
+\item $K\models K_a\varphi \rightarrow K_a(\varphi\lor\psi)$
+\item $S5 \models \neg(K_a\varphi\land K_a\neg\psi)$
+
+\end{enumerate}
+\end{prop}
+
+Kripke models are also useful in the way that, putting additional constraints on the accessibility relation, we are able to obtain extra modal validities.
+
+For example, if in the model $M$ the accessibility relation $R_a$ is reflexive then M satisfies $K_a \varphi \rightarrow \varphi$.
+Therefore, if $T$ is the class of all Kripke models that have a reflexive accessibility relation then $T \models K_a \varphi \rightarrow \varphi$.
+\end{defn}
+
+\subsection{Axiomatisation}
+
+A logic can be specified in two ways: syntactically and semantically. The syntactic approach involves the existence of an axiomatization.
+This tries to give a core set of formulas, called the axioms, and inference rules. From this set we can derive all other formulas in the logic.
+
+\begin{defn}
+
+The basic epistemic logic \textbf{K}, where we have an operator $K_a$ for every $a \in A$, is comprised of all instances of propositional tautologies, the
+$K$ axiom, and the derivation rules Modus Ponens $(MP)$ and Necessitation
+$(Nec)$.
+
+\end{defn}
+
+The basic modal system \textbf{K}:
+
+\begin{center}
+\begin{tabular}{ | c c |}
+\hline
+all instantiations of propositional tautologies &   \\
+$K_a(\varphi \rightarrow \psi) \rightarrow (K_a\varphi \rightarrow K_a\psi)$ & distribution of $K_a$ over $\rightarrow$\\
+From $\varphi$ and $\varphi \rightarrow \psi$, infer $\varphi$   &  modus ponens\\
+From $\varphi$, infer $K_a \varphi$  &  necessitation of $K_a$\\
+
+\hline
+\end{tabular}
+\end{center} 
+
+
+This axiomatizatiom captures the validities of the semantic class $K$ (the class of all Kripke models).
+
+In the following definition we will make precise what it means to be a \textit{theorem} of an axiomatisation.
+
+\begin{defn}
+
+Let $X$ be an arbitrary axiomatisation with axioms $Ax_1, Ax_2,$ $\dotsc$, $Ax_n$ and rules $Ru_1,Ru_2,\dotsc, Ru_k$, where each rule $Ru_j(j \leq k)$ is of the form “From $\varphi _1$, . . . $\varphi _{j_{ar}}$ infer $\varphi _j$”. We call $j_{ar}$ the arity of the rule. Then, a derivation for $\varphi$ within $X$ is a finite sequence $\varphi _1, . . . , \varphi _m$ of formulas such that:
+\begin{enumerate}
+
+\item $\varphi _m = \varphi$;
+\item every $\varphi _i$ in the sequence is
+\begin{enumerate}
+
+\item  either an instance of one of the axioms $Ax_1, Ax_2,$ $\dotsc$, $Ax_n$
+\item or else the result of the application of one of the rules $Ru_j(j \leq k)$ to $j_{ar}$ formulas in the sequence that appear before $\varphi _i$
+
+\end{enumerate}
+
+\end{enumerate}
+
+If there is a derivation for $\varphi$ in $X$ we write $\vdash _X \varphi$, or, if the system X is clear form the context, we just write $\vdash \varphi$. We then also say that $\varphi$ is a theorem of $X$, or that $X$ proves $\varphi$.
+
+\end{defn}
+
+These axioms and rules represent the weakest multi-modal logic \textbf{K}. The formulas we gave in the last proposition are derivable from this system of axioms. These properties seem to be overidealised.
+
+There are some knowledge notions that seem natural and yet we can not derive them from the system \textbf{K}, hence the weakness. For example, the \textit{Truth} axiom which states that knowledge is veridical (whatever one states, must be so). Also, we will add two other axioms called the \textit{introspective agents}: 
+an agent knows what he knows and also what he does not know.
+\begin{itemize}
+    \item $K_a\varphi\rightarrow\varphi$  -  truth
+    \item $K_a\varphi\rightarrow K_a K_a\varphi$ -  positive introspection
+    \item $\neg K_a\varphi\rightarrow K_a\neg K_a\varphi$  -  negative introspection
+\end{itemize}
+
+We call the last two axiom 4 and axiom 5. They seem a bit unrealistic for human agents, but quite appropriate for artificial ones.
+
+$X + \varphi$ denotes the axiom system that has axiom $\varphi$ added to those of $X$, and the same rules as $X$.
+
+\begin{defn}
+
+We define the following axiom systems:
+\begin{itemize}
+\item \textbf{T} = \textbf{K} + $T$
+\item \textbf{S4} = \textbf{T} + 4
+\item \textbf{S5} = \textbf{S4} + 5
+\end{itemize}
+
+\end{defn}
+
+\textit{\textbf{The Proof system}} \textbf{S5}
+
+This is the system we will be using while demonstrating the completeness theorem.
+
+\begin{enumerate}
+\item all instantiations of propositional tautologies 
+\item $K_a (\varphi \rightarrow \psi) \rightarrow (K_a\varphi \rightarrow K_a\psi)$  -  distribution of $K_a$ over $\rightarrow$
+\item $K_a\varphi \rightarrow \varphi$  -  truth 
+\item $K_a\varphi \rightarrow K_a K_a \varphi$  -  positive introspection
+\item $\neg K_a\varphi \rightarrow K_a\neg K_a\varphi$  -  negative introspection
+\item From $\varphi$ and $\varphi \rightarrow \psi$, infer $\psi$  -  modus ponens
+\item From $\varphi$, infer $K_a\varphi$  -  necessitation of $K_a$
+
+\end{enumerate}
+
+\newpage
+
+\section{Main results}
+
+\subsection{Soundness and completeness}
+
+ Soundness and completeness are two very important notions in all logic systems. 
+ 
+ A system is \textit{sound} only if it does not allow the derivation of arguments for which there is a counterexample. In other words, our proofs don't include anything that is false.
+ $$
+ \text{ if }   \Gamma \vdash \varphi   \text{ then }    \Gamma \models \varphi
+ $$
+ 
+ A system is \textit{complete} only if all the arguments that don't have any counterexample can be derived. Our proofs don't exclude anything that is right.
+
+ $$
+ \text{ if }   \Gamma \models \varphi   \text{ then }    \Gamma \vdash \varphi
+ $$
+
+\begin{thm}
+
+
+(Soundness and completeness)
+
+Axiom system \textbf{K} is sound and complete with respect to the semantic class $K$. This means that for every formula $\varphi$, we have $\vdash _K \varphi$ iff $K \models \varphi$.
+The same holds for \textbf{T} with respect to $T$, for \textbf{S4} with respect to $S4$ and, finally, for \textbf{S5} with respect to $S5$.
+
+\end{thm}
+
+\subsection{The Soundness theorem}
+
+This states that a system is sound if any formula that is derivable is also semantically correct, it is true and valid.
+
+$$
+ \text{ if }   \Gamma \vdash \varphi   \text{ then }    \Gamma \models \varphi
+$$
+
+To prove this we take a set $\Delta$ that contains all formulas that are semantic consequences of the Kripke model class $S5$ and show that all axioms of the proof system \textbf{S5} are included in $\Delta$. Also we will show that $\Delta$ is closed under modus ponens and necessitation.
+
+\begin{proof}
+
+Let $\Delta := \{  \varphi \in L_K \mid \text{ } S5 \models \varphi \} $ 
+\begin{itemize}
+\item All axioms from the proof system \textbf{S5} are semantic tautologies and because of this they are included in $\Delta$.
+
+~
+
+We now prove that $\Delta$ is \textbf{closed under modus ponens}:
+
+\item Let $\varphi$ and $\varphi \rightarrow \psi \in \Delta$, then $S5 \models \varphi$ and $S5 \models \varphi \rightarrow \psi$.
+
+\item From $S5 \models \varphi$ (by proposition 2.5, item 2) we get that $S5 \models \varphi \implies S5 \models K_a \varphi$. 
+
+\item Analogously, $S5 \models \varphi \rightarrow \psi \implies S5 \models K_a( \varphi \rightarrow \psi)$.
+
+\item By proposition 2.5, item 1 we have that $S5 \models K_a \varphi\land K_a(\varphi \rightarrow \psi) \rightarrow K_a\psi$. 
+
+\item So $S5 \models K_a \psi$. By definition 2.3 item 4 and the fact that the accessibility relation is reflexive we get that $S5 \models \psi \implies \psi \in \Delta$. Therefore $\Delta$ is closed under modus ponens.
+
+~
+
+$\Delta$ 's \textbf{closure under necessitation}:
+
+\item Let $S5 \models \varphi$. This means that $\varphi \in \Delta$.
+
+\item By item 2 of proposition 2.5 we have that $S5 \models \varphi \implies S5 \models K_a \varphi$.
+\item This means that $K_a\varphi \in \Delta$.
+\item Therefore $\Delta$ is closed under necessitation.
+\end{itemize}
+
+\end{proof}
+
+\subsection{The Completeness theorem}
+
+When all the valid formulas of a system are deducible we call the proof system complete.
+
+We prove completeness by contraposition (we want to prove that every valid formula is deducible, so, by contraposition, we will prove it's contrapositive: if a formula is not deducible then it is not valid).
+
+If a formula in not deducible then we show that there exists a state in which it is false.
+
+For this we need to construct a special type of a Kripke model called \textbf{a canonical model}. We will build it such that every consistent formula is true in some state of the model.
+
+We will be proving completeness for the Basic System $S5$.
+
+Before we construct the canonical model we will need to define the term \textit{maximally consistent} set of formulas. This is the equivalent of a state in proof theoretic terms.
+
+\begin{defn}
+
+Let $\Gamma \subseteq L_K$. $\Gamma$ is maximally consistent iff:
+\begin{enumerate}
+    \item $\Gamma$ is consistent: $ \Gamma \nvdash \bot$
+    \item $\Gamma$ is maximal: there is no $\Gamma' \subseteq L_K$ such that $\Gamma \subset \Gamma'$ and $\Gamma' \nvdash \bot$.
+\end{enumerate}
+
+\end{defn}
+
+   
+
+
+In the canonical model we will use the maximally consistent set of formulas as the set of states. 
+
+\begin{defn}
+
+\textbf{(The Canonical Model)}
+The canonical model $M^c = \langle S^c, \sim ^c, V^c \rangle$ is defined as follows:
+
+\begin{itemize}
+    \item  $S^c = \{ \Gamma \mid \Gamma$ is maximally consistent$\}$
+    \item $\Gamma \sim _a ^ c \Delta$ iff $\{ K_a\varphi \mid K_a\varphi \in \Gamma \} = \{ K_a\varphi \mid K_a\varphi \in \Delta \}$
+    \item $V_p^c = \{ \Gamma \in S^c \mid p \in \Gamma \}$
+\end{itemize}
+
+\end{defn}
+
+We are working with models of $S5$ and so we must show that the Canonical model satisfies the restrictions posed by this, namely, that the accessibility relations are equivalence relations.
+
+\begin{lem}
+\textbf{(Canonicity)}
+The canonical model is reflexive, transitive and symmetric.
+\end{lem}
+
+\begin{proof}
+
+~
+
+\textbf{Reflexive:}
+Let $\Sigma \in S^c$ a maximally consistent set.
+\begin{itemize}
+
+\item We have that $\{ K_a \varphi \mid K_a \varphi \in \Sigma \} = \{ K_a \varphi \mid K_a \varphi \in \Sigma \} $.
+
+\item This means that $\Sigma \sim^c_a \Sigma$.
+\end{itemize}
+~
+
+\textbf{Transitive:}
+Let $\Gamma, \Delta, \Sigma \in S^c$ maximally consistent sets.
+\begin{itemize}
+\item We assume that $\Gamma \sim^c_a \Delta$ and $\Delta \sim^c_a \Sigma$.
+\item From the definition of the accessibility we get that:
+
+$\{ K_a \varphi \mid K_a \varphi \in \Gamma \} = \{ K_a \varphi \mid K_a \varphi \in \Delta \}$. (1)
+
+\item Analogously:
+
+$\{ K_a \varphi \mid K_a \varphi \in \Delta \} = \{ K_a \varphi \mid K_a \varphi \in \Sigma \}$. (2)
+
+\item From (1) and (2) we get $\{ K_a \varphi \mid K_a \varphi \in \Gamma \} = \{ K_a \varphi \mid K_a \varphi \in \Sigma \}$.
+
+\item This implies that $\Gamma \sim^c_a \Sigma$.
+\end{itemize}
+~
+
+\textbf{Symmetric:}
+Let $\Gamma, \Sigma \in S^c$ maximally consistent sets.
+\begin{itemize}
+\item We have that $\Gamma \sim^c_a \Sigma$.
+
+\item From the definition of the accessibility we get that:
+
+$\{ K_a \varphi \mid K_a \varphi \in \Gamma \} = \{ K_a \varphi \mid K_a \varphi \in \Sigma \}$.
+\item This is the same thing as:
+
+$\{ K_a \varphi \mid K_a \varphi \in \Sigma \} = \{ K_a \varphi \mid K_a \varphi \in \Gamma \}$
+
+\item Therefore $\Sigma \sim^c_a \Gamma$.
+\end{itemize}
+%\textbf{Euclidean:}
+%Let $\Gamma, \Delta, \Sigma \in S^c$ maximally consistent sets.
+
+%We assume that $\Gamma \sim^c_a \Delta$ and $\Gamma \sim^c_a \Sigma$.
+
+%From the definition of the accessibility we get that $\{ K_a \varphi \mid K_a \varphi \in \Gamma \} = \{ K_a \varphi \mid K_a \varphi \in \Delta \}$. (1)
+
+%Analogously $\{ K_a \varphi \mid K_a \varphi \in \Gamma\} = \{ K_a \varphi \mid K_a \varphi \in \Sigma \}$. (2)
+
+%From (1) and (2) $\implies$ $\{ K_a \varphi \mid K_a \varphi \in \Gamma \} = \{ K_a \varphi \mid K_a \varphi \in \Sigma \}$.
+
+%This implies that $\Delta \sim^c_a \Sigma$.
+
+~
+
+The accessibility relation $\sim^c_a$ is reflexive, transitive and symmetric for all $a \in A$, therefore it is an \textbf{equivalence relation}.
+\end{proof}
+
+The next step is to show that if a set of formulas is consistent, then it must belong to a maximally consistent set. In this way, every consistent formula will be true at some state in the canonical model. For this we have the Lindenbaum Lemma.
+
+\begin{lem}
+
+\textbf{(Lindenbaum)} Every consistent set of formulas is a subset of a maximally consistent set of formulas.
+
+\end{lem}
+
+\begin{proof}
+
+Let $\Delta$  be a consistent set of formulas and $\varphi _n$ the $n$-th formula from an enumeration of $L_k$ (Note that this exists given that the set of atomic propositions is countable and the set of agents is finite).
+\begin{align*}
+    \Gamma _0 &= \Delta\\
+    \Gamma _{n + 1} &= \left \{
+    \begin{array}{ll}
+    \Gamma _n \cup \{ \varphi _{n} \} & \text{if }  \Gamma _n \cup \{\varphi _n \} \text{ is consistent}\\
+    \Gamma _n & \text{otherwise}\\
+    \end{array}
+  \right.
+\end{align*}
+
+
+~
+
+Let $\Gamma =  \bigcup\limits _{n \in \mathbb{N}} \Gamma _n$ and $\Delta \subseteq \Gamma$.
+
+We prove by induction that $\Gamma$ is \textbf{consistent}:
+\begin{itemize}\item \textbf{Base case}: $\Gamma _0$ is consistent by assumption.
+
+\item \textbf{Induction step}: 
+\begin{itemize}
+    \item $\Gamma _n$ is consistent
+    \item We add a formula to $\Gamma _n$ only if the resulting set is consistent.
+    \item This makes $\Gamma _{n+1}$ also consistent.
+\end{itemize}
+\end{itemize}
+Now we prove that $\Gamma$ is \textbf{maximal}:
+\begin{itemize}
+\item Let $\varphi _n$ be a formula such that $\varphi _n \notin \Gamma$.
+
+\item This means that $\varphi _n \notin \Gamma _n$, therefore  $\Gamma _n \cup \{\varphi _n \}$ is inconsistent.
+
+\item This means that $\Gamma \cup \{\varphi _n\}$ is also inconsistent.
+
+\item $\varphi _n$ was arbitrary, so there is no $\Gamma$ such that $\Gamma \subset \Gamma' $ and $\Gamma'$ is consistent.
+\end{itemize}
+
+
+\end{proof}
+
+
+We will show that a formula belongs to a maximally consistent set iff that formula is true in the pointed model when that maximally consistent set is taken as the state. This is known as the Truth Lemma.
+
+Before proving this lemma, we will be demonstrating some properties that will be required in the proof.
+
+\begin{lem}
+
+Let $\Gamma$ and $\Delta$ be maximally consistent sets, then:
+\begin{enumerate}
+    \item $\Gamma$ is deductively closed (closed under deduction)
+    \begin{proof}
+    
+    ~
+    
+    \begin{itemize}
+        \item $\Gamma \vdash \varphi \implies \Gamma \cup \{ \varphi \} \text{ is consistent} $ (1)
+        \item $\Gamma$ is maximal(2)
+        \item From (1) and (2) $\implies \varphi \in \Gamma$ 
+    \end{itemize}
+    \end{proof}
+    \item $\varphi \in \Gamma \text{ iff } \neg\varphi \notin \Gamma$
+    
+    \begin{proof}
+    ~
+    
+    ``$\implies$''
+    \begin{itemize}
+    \item Let $\varphi \in \Gamma$.
+    \item $\Gamma$ is consistent $\implies \neg \varphi \notin \Gamma$.
+    \end{itemize}
+    ``$\Longleftarrow $''
+    \begin{itemize}
+    \item $\neg \varphi \notin \Gamma$.
+    \item $\Gamma$ is maximal $\implies$ $\Gamma \cup \{\neg \varphi \} \vdash \bot$.
+    \item By reductio ad absurdum we get that $\Gamma \vdash \varphi$.
+    
+    \item Because $\Gamma$ is closed under deduction $\varphi \in \Gamma$.
+    \end{itemize}
+    \end{proof}
+    
+    \item $(\varphi \land \psi) \in \Gamma \text{ iff } \varphi \in \Gamma \text{ and } \psi \in \Gamma$
+    \begin{proof}
+    ~
+    
+    ``$\implies$''
+    \begin{itemize}
+    \item We have that $(\varphi \land \psi) \in \Gamma$.
+    
+    \item From propositional tautologies $\implies \{ \varphi \land \psi \} \vdash \varphi \text{ and } \{ \varphi \land \psi \} \vdash \psi$.
+    
+    \item $\Gamma$ is deductively closed so $\varphi \in \Gamma \text{ and } \psi \in \Gamma$.
+    \end{itemize}
+    ``$\Longleftarrow $''
+    \begin{itemize}
+    \item $\varphi \in \Gamma \text{ and } \psi \in \Gamma$
+    
+    \item From propositional tautologies $\implies \{ \varphi, \psi \} \vdash \varphi \land \psi $.
+    
+     \item $\Gamma$ is deductively closed so $(\varphi \land \psi) \in \Gamma$.
+    \end{itemize}
+    
+    \end{proof}
+    
+    \item $\Gamma \sim ^c _a \Delta \text{ iff } \{ K_a\varphi \mid K_a\varphi \in \Gamma \} \subseteq \Delta$
+    \begin{proof}
+    ~
+    
+    ``$\implies$''
+    \begin{itemize}
+        \item Suppose that $\Gamma \sim ^c _a \Delta$.
+        \item From the definition of $\sim ^c$ we have that:
+        $$\{ K_a\varphi \mid K_a\varphi \in \Gamma \} = \{ K_a\varphi \mid K_a\varphi \in \Delta \}$$
+        \item Therefore $\{ K_a\varphi \mid K_a\varphi \in \Gamma \} \subseteq \Delta$.
+    \end{itemize}
+    ``$\Longleftarrow$''
+    \begin{itemize}
+        \item Suppose that $\{ K_a\varphi \mid K_a\varphi \in \Gamma \} \subseteq \Delta$.
+        \item Let $K_a\varphi \in \Delta$.
+        \item Then by item 2 of this lemma we get that $ \neg K_a\varphi \notin \Delta$.
+        \item Applying neccesitaion we get that $K_a\neg K_a\varphi \notin \Delta$.
+    
+    \item By the assumption we get that $K_a\neg K_a\varphi \notin \Gamma$. From axiom 5 (negative introspection) this means that $ \neg K_a\varphi \notin \Gamma$.
+    
+    \item By item 2 of this lemma we get that $K_a \varphi \in \Gamma$.
+    
+    \item Therefore $\{ K_a\varphi \mid K_a\varphi \in \Gamma \} = \{ K_a\varphi \mid K_a\varphi \in \Delta \}$ so $\Gamma \sim ^c _a \Delta$.
+    \end{itemize}
+    \end{proof}
+    
+    \item $ \{ K_a\varphi \mid K_a\varphi \in \Gamma \} \vdash  \psi \text{ iff } \{ K_a\varphi \mid K_a\varphi \in \Gamma \}\vdash K_a\psi$ 
+    
+    \begin{proof}
+    ~
+    
+    ``$\Longrightarrow$''
+    \begin{itemize}
+    \item We assume that $ \{ K_a\varphi \mid K_a\varphi \in \Gamma \} \vdash  \psi$.
+    \item This implies that there exists a finite set $ \Gamma' \subseteq \{ K_a\varphi \mid K_a\varphi \in \Gamma \} $ such that $ \vdash \bigwedge\limits _{ \chi \in \Gamma' } \chi\rightarrow \psi$.
+    \item By necessitation we get $\vdash K_a ( \bigwedge\limits _{ \chi \in \Gamma' }\chi \rightarrow \psi)$.
+    \item By distribution we get $\vdash K_a \bigwedge\limits _{ \chi \in \Gamma' }\chi\rightarrow K_a \psi$.
+    \item This is equivalent to $\vdash \bigwedge \{ K_a\chi \mid \chi \in \Gamma' \} \rightarrow K_a \psi$.
+    \item By the positive introspection axiom we have $\vdash K_a \varphi \rightarrow K_a K_a\varphi$.
+    \item This means that $ \{ K_a\varphi \mid \varphi \in \Gamma \} \vdash \bigwedge \{ K_a \chi \mid \chi \in \Gamma' \}$.
+    \item By modus ponens we get $\{ K_a\varphi \mid K_a\varphi \in \Gamma \}\vdash K_a\psi$.
+    \end{itemize}
+    ``$\Longleftarrow$''
+    \begin{itemize}
+        \item We assume that $ \{ K_a\varphi \mid K_a\varphi \in \Gamma \} \vdash  K_a\psi$. \item The Truth axiom states $ \{ K_a\varphi \mid K_a\varphi \in \Gamma \} \vdash  K_a\psi \rightarrow \psi$.
+        \item By applying modus ponens to the two we get $\{ K_a\varphi \mid K_a\varphi \in \Gamma \}\vdash\psi$.
+    \end{itemize}
+   
+    \end{proof}
+    
+\end{enumerate}
+
+\end{lem}
+
+
+We will now present the lemma which makes sure that a formula belongs to a maximally consistent set iff that formula is true in the pointed model when that maximally consistent set is taken as the state.
+
+\begin{lem}
+
+\textbf{(Truth)}
+For every $\varphi \in L_K$ and every maximally consistent set $\Gamma$:
+$$
+\varphi \in \Gamma \text{ iff } ( M^c, \Gamma ) \models \varphi
+$$
+
+\end{lem}
+
+\begin{proof}
+~
+
+We will prove this based on the inductive definition 2.1 of a formula.
+
+\textbf{Base case:} 
+\begin{itemize}
+    \item Suppose $\varphi$ is an atomic proposition $p$
+    \item Then, by the definition of $V^c$, we have that $p \in\Gamma \text{ iff } \Gamma \in V^c_p$.
+    \item This is equivalent (by semantics $M,s \models p$ iff $s \in V (p)$) to $(M^c , \Gamma)\models p$.
+\end{itemize}
+
+
+\textbf{Induction hypothesis:}
+\begin{itemize}
+    \item For every maximally consistent set $\Gamma $ and for a given $\varphi$ and $\psi$ we consider $\varphi \in \Gamma$ iff $(M^c, \Gamma) \models \varphi$ and $\psi \in \Gamma$ iff $(M^c, \Gamma) \models \psi$.
+\end{itemize}
+
+
+In order for this to happen we must check the following three cases:
+
+\begin{enumerate}
+    \item \textbf{negation}: We must show that $\neg\varphi \in \Gamma \text{ iff } ( M^c, \Gamma ) \models \neg\varphi$
+   \begin{align*}
+    \neg\varphi \in \Gamma &\Leftrightarrow  \varphi \notin \Gamma
+    \tag{by item 2 of lemma 3.6} \\
+    &\Leftrightarrow  (M^c, \Gamma) \not\models \varphi
+    \tag{by the induction hypothesis} \\
+    &\Leftrightarrow (M^c, \Gamma) \models \neg\varphi
+    \tag{by the semantics}
+\end{align*}
+    
+    \item \textbf{conjunction}: We must show that $(\varphi \land \psi) \in \Gamma \text{ iff } ( M^c, \Gamma ) \models (\varphi \land \psi)$
+    \begin{align*}
+        (\varphi \land \psi) \in \Gamma &\Leftrightarrow \varphi \in \Gamma \text{ and } \psi \in \Gamma \tag{by item 3 of lemma 3.6}\\
+        &\Leftrightarrow (M^c, \Gamma) \models \varphi \text{ and }  (M^c, \Gamma) \models \psi \tag{induction hypothesis}\\
+        &\Leftrightarrow (M^c, \Gamma) \models (\varphi \land\psi) \tag{by semantics}\\
+    \end{align*}
+    
+    
+    \item \textbf{knowledge modal}: We must show that $K_a\varphi \in \Gamma \text{ iff } ( M^c, \Gamma ) \models K_a\varphi$
+    
+    ``$\Longrightarrow$''
+    \begin{itemize}
+    \item Suppose that $K_a\varphi \in \Gamma$.
+    \item Let $\Delta$ be an arbitrary maximally consistent set and $\Gamma \sim ^c_a \Delta$. This (by the definition of $\sim ^c_a$) means that $K_a \varphi \in \Delta$.
+    
+    \item If $K_a\varphi \in \Delta$ we know that $\neg K_a\varphi \notin \Delta$ because $\Delta$ is consistent.
+    
+    \item If $\neg K_a\varphi \notin \Delta $ and $\Delta$ is maximal then we get $\Delta \cup \{\neg K_a\varphi \} \vdash \bot$, therefore, by reductio ad absurdum, $\Delta \vdash K_a\varphi$. (1)
+    
+    \item The Truth axiom states $\Delta \vdash K_a \varphi \rightarrow \varphi$. (2)
+    
+    \item On (1) and (2) we apply modus ponens and get $\Delta \vdash \varphi$.
+    
+    \item $\Delta$ is closed under deduction so $\varphi \in \Delta $.
+    \item Then by the induction hypothesis $(M^c, \Delta) \models \varphi$.
+    
+    \item From semantics we know that $M, s \models K_a\varphi$ iff for all $t$ such that $R_a st$,  $M, t \models \varphi$.
+    \item Since $\Delta$ was arbitrary we have that $(M^c, \Delta) \models \varphi$ for all $\Delta \sim^c_a \Gamma$. This is equivalent to $(M^c, \Gamma) \models K_a\varphi$.
+    \end{itemize}
+    
+    ``$\Longleftarrow$''
+    \begin{itemize}
+    \item Suppose $(M^c, \Gamma) \models K_a \varphi$.
+    
+    \item This means that for all $ \Delta \sim ^c_a \Gamma$ we have $(M^c, \Delta) \models \varphi$  (by semantics).
+    
+    \item We will further show that $ \{ K_a\chi \mid K_a\chi \in \Gamma \} \vdash  \varphi$ .
+    \item (This is in order to prove based on item 5 of lemma 3.6 and closure under deduction that $K_a\varphi \in \Gamma$).
+    
+    \item We will suppose by reductio ad absurdum that the set $\Delta = \{ \neg \varphi \} \cup \{ K_a \chi \mid K_a\chi \in \Gamma \}$ is consistent.
+    \item By the Lindenbaum Lemma $\Delta$ is a subset of a maximally consistent set, say $\Sigma$. \item Therefore $\{ K_a \chi \mid K_a\chi \in \Gamma \} \subseteq \Sigma$.
+    
+    %$\{ K_a \chi \mid K_a\chi \in \Gamma \} \subseteq \Sigma \Leftrightarrow \Gamma \sim^c_a \Sigma$ (by item 4 of lemma 3.6).
+    
+    \item Since $\neg \varphi \in \Delta$ and $\Sigma$ is maximally consistent we get that $\varphi \notin \Sigma$.
+    \item By the induction hypothesis this means that $(M^c, \Sigma) \not\models \varphi$.
+    \item This leads to a contradiction with our assumption.
+    \item Therefore $ \{ K_a\varphi \mid K_a\varphi \in \Gamma \} \vdash  \varphi$ is true.
+    \item By item 5 of lemma 3.6 we get $\{ K_a\varphi \mid K_a\varphi \in \Gamma \} \vdash  K_a \varphi$
+    \item By closure under deduction we get that $K_a\varphi \in \Gamma$.
+    \end{itemize}
+\end{enumerate}
+\end{proof}
+
+
+
+We are now ready to prove the Completeness theorem.
+
+\begin{thm}
+
+\textbf{(Completeness)}
+For every $\varphi \in L_k$ we have that:
+
+$$
+S5 \models \varphi \implies S5 \vdash \varphi
+$$
+\end{thm}
+
+\begin{proof}
+
+We will use contraposition in our proof:
+\begin{itemize}
+\item We assume that $S5 \nvdash \varphi$.
+\item This means that $\{ \neg\varphi \}$ is a consistent set.
+
+ \item By the Lindenbaum Lemma we get that $\neg \varphi \in \Gamma$ where $\Gamma$ is a maximal consistent set.
+ 
+ \item By the Truth Lemma $(M^c, \Gamma) \models \neg \varphi$, therefore $S5 \not\models \varphi$.
+\end{itemize}
+\end{proof}
+
+\section{Conclusions}
+Conceived as a single formal system, epistemic logic has become a general formal approach to the study of the structure of knowledge, its limits and possibilities, and its static and dynamic properties \cite{art}.
+
+Epistemic logic gives us an appropriate environment to work with abstract notions as knowledge. It provides insight into the properties of individual knowers.
+
+%-------- References --------------
+
+\newpage
+
+
+
+\bibliographystyle{plain}
+\bibliography{referinte}
+
+
+\end{document}
